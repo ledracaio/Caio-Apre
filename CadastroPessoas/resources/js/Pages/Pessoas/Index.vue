@@ -5,10 +5,11 @@ import axios from 'axios';
 
 const props = defineProps(['pessoas']);
 
+
 async function deletePessoa(id) {
   if (confirm("Tem certeza que deseja excluir esta pessoa?")) {
     try {
-      await axios.delete(route('pessoas.destroy', { id }), {
+      await axios.delete(route('pessoas.destroy', id), {
         headers: {
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
@@ -18,10 +19,11 @@ async function deletePessoa(id) {
       pessoas.value = pessoas.value.filter(pessoa => pessoa.id !== id);
     } catch (error) {
       console.error("Erro ao excluir pessoa:", error);
-      alert("Erro ao excluir pessoa.");
+      location.reload();
     }
   }
 }
+
 
 </script>
 

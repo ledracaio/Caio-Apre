@@ -23,6 +23,7 @@ Route::put('/pessoas/{id}', [PessoaController::class, 'update'])->name('pessoas.
 Route::delete('/pessoas/{id}', [PessoaController::class, 'destroy'])->name('pessoas.destroy');
 
 
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
