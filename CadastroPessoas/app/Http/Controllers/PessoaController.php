@@ -4,50 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Models\Pessoa;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PessoaController extends Controller
 {
     public function index()
     {
-        return Pessoa::all();
+        $pessoas = Pessoa::all();
+        return Inertia::render('Pessoas/Index', ['pessoas' => $pessoas]);
+    }
+
+    public function create()
+    {
+        return Inertia::render('Pessoas/Create');
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nome' => 'required|string|max:255',
-            'cpf' => 'required|string|size:11|unique:pessoas',
-            'tipo' => 'required|in:fisica,juridica',
-            'telefone' => 'nullable|string|max:15',
-            'email' => 'required|string|email|max:255|unique:pessoas',
+        $data = $request->validate([
+            'nome' => 'required|string',
+            'cpf' => 'required|string|unique:pessoas',
+            'tipo' => 'required|string|in:fisica,juridica',
+            'telefone' => 'required|string',
+            'email' => 'required|email|unique:pessoas'
         ]);
 
-        $pessoa = Pessoa::create($validatedData);
-        return response()->json($pessoa, 201);
+        Pessoa::create($data);
+        return redirect()->route('pessoas.index')->with('success', 'Pessoa criada com sucesso!');
     }
 
-    public function show(Pessoa $pessoa)
+    public function edit($id)
     {
-        return $pessoa;
+        $pessoa = Pessoa::findOrFail($id);
+        return Inertia::render('Pessoas/Edit', ['pessoa' => $pessoa]);
     }
 
-    public function update(Request $request, Pessoa $pessoa)
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'nome' => 'required|string|max:255',
-            'cpf' => 'required|string|size:11|unique:pessoas,cpf,' . $pessoa->id,
-            'tipo' => 'required|in:fisica,juridica',
-            'telefone' => 'nullable|string|max:15',
-            'email' => 'required|string|email|max:255|unique:pessoas,email,' . $pessoa->id,
+        $pessoa = Pessoa::findOrFail($id);
+        
+        $data = $request->validate([
+            'nome' => 'required|string',
+            'cpf' => 'required|string|unique:pessoas,cpf,' . $id,
+            'tipo' => 'required|string|in:fisica,juridica',
+            'telefone' => 'required|string',
+            'email' => 'required|email|unique:pessoas,email,' . $id
         ]);
 
-        $pessoa->update($validatedData);
-        return response()->json($pessoa);
+        $pessoa->update($data);
+        return redirect()->route('pessoas.index')->with('success', 'Pessoa atualizada com sucesso!');
     }
 
-    public function destroy(Pessoa $pessoa)
+    public function destroy($id)
     {
+        $pessoa = Pessoa::findOrFail($id);
         $pessoa->delete();
-        return response()->json(null, 204);
+        return redirect()->route('pessoas.index')->with('success', 'Pessoa excluída com sucesso!');
     }
 }
