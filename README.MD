@@ -66,11 +66,17 @@ cp .env.example .env
 No arquivo .env, ajuste as configurações do banco de dados:
 
 DB_CONNECTION=pgsql //Estou utilizando o pgsql porém pode ser usado também com mysql
+
 DB_HOST=127.0.0.1 // localhost
+
 DB_PORT=5432 // Caso utilize mysql troque a porta para a desejada ou padrão 3306
+
 DB_DATABASE=CaioApresentame
+
 DB_USERNAME=postgres // Usuário onde está o database
+
 DB_PASSWORD=postgres // Senha do usuário onde está o database
+
 
 (Caso não tenha o database criado Execute a criação ou utilize um database existente)
 
