@@ -57,6 +57,8 @@ npm install
 
 4. Configure o Banco de Dados
 
+* Verifique se a extensão do banco a ser utilizado está ativo no php.ini
+
 Renomeie o arquivo .env.example para .env e configure as variáveis de ambiente para o PostgreSQL:
 
 cp .env.example .env
@@ -134,7 +136,7 @@ Exclusão de Pessoa
 - Confirme o alert
 
 
-#Estrutura do Projeto
+# Estrutura do Projeto
 
 O projeto é organizado em duas partes principais:
 
